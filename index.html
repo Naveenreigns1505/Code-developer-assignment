@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Bar chart section -->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['corechart', 'bar']
+        });
+        google.charts.setOnLoadCallback(drawStuff);
+
+        function drawStuff() {
+
+            var button = document.getElementById('change-chart');
+            var chartDiv = document.getElementById('chart_div');
+
+            var data = google.visualization.arrayToDataTable([
+                ['Galaxy', 'Distance', 'Brightness'],
+                ['Current', 8000, 23.3],
+                ['1-30', 24000, 4.5],
+                ['31-60', 30000, 14.3],
+                ['60-90', 50000, 0.9],
+                ['', 60000, 13.1]
+            ]);
+
+            var materialOptions = {
+                width: 900,
+                chart: {
+                    title: 'Nearby galaxies',
+                    subtitle: 'distance on the left, brightness on the right'
+                },
+                series: {
+                    0: {
+                        axis: 'distance'
+                    },
+                    1: {
+                        axis: 'brightness'
+                    }
+                },
+                axes: {
+                    y: {
+                        distance: {
+                            label: 'parsecs'
+                        },
+
+                    }
+                }
+            };
+
+            var classicOptions = {
+                width: 900,
+                series: {
+                    0: {
+                        targetAxisIndex: 0
+                    },
+                    1: {
+                        targetAxisIndex: 1
+                    }
+                },
+                title: 'Nearby galaxies - distance on the left, brightness on the right',
+                vAxes: {
+
+                    0: {
+                        title: 'parsecs'
+                    },
+                    1: {
+                        title: 'apparent magnitude'
+                    }
+                }
+            };
+
+            function drawMaterialChart() {
+                var materialChart = new google.charts.Bar(chartDiv);
+                materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+                button.innerText = 'Change to Classic';
+                button.onclick = drawClassicChart;
+            }
+
+            function drawClassicChart() {
+                var classicChart = new google.visualization.ColumnChart(chartDiv);
+                classicChart.draw(data, classicOptions);
+                button.innerText = 'Change to Material';
+                button.onclick = drawMaterialChart;
+            }
+
+            drawMaterialChart();
+        };
+
+        //speedometer
+
+        const speedPercentage = 1.85;
+
+
+        const angle = (speedPercentage / 3) * 360;
+
+
+        const indicator = document.querySelector('.indicator');
+        indicator.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+
+        //stacked bar
+
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Month');
+            data.addColumn('number', 'Earnings');
+            data.addColumn('number', 'Expenses');
+
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            var chartData = [];
+            var totalEarnings = 0;
+            var totalExpenses = -150000;
+            var expenseIncrement = 75000;
+
+            for (var i = 0; i < months.length; i++) {
+                totalEarnings += getRandomInt(0, 500000);
+                totalExpenses += expenseIncrement;
+                chartData.push([months[i], totalEarnings, totalExpenses]);
+            }
+
+            data.addRows(chartData);
+
+            var options = {
+                title: 'Profit and Loss Summary',
+                width: 900,
+                height: 500,
+                hAxis: {
+                    title: 'Month'
+                },
+                vAxes: {
+                    0: {
+                        title: 'Earnings',
+                        format: 'short'
+                    },
+                    1: {
+                        title: 'Profit and Loss',
+                        format: 'short'
+                    }
+                },
+                series: {
+                    0: {
+                        targetAxisIndex: 0
+                    },
+                    1: {
+                        targetAxisIndex: 1
+                    }
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('stacked_bar_chart'));
+
+            chart.draw(data, options);
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <div>
+        <div class="in-cont">
+            <div class="first">
+                <h1 class="total">Total Accounts Receivable</h1>
+                <h2 class="pay">$6,621,280</h2>
+            </div>
+            <div class="first">
+                <h1 class="total">Total Accounts Payable</h1>
+                <h2 class="payab">$1,630,270</h2>
+            </div>
+            <div class="first">
+                <h1 class="total">Equity Ratio</h1>
+                <h2 class="equ">75.30%</h2>
+            </div>
+            <div class="first">
+                <h1 class="total">Debt Equity</h1>
+                <h2 class="beb">$1,630,270</h2>
+            </div>
+
+            <!-- Bar chart section -->
+
+            <div id="chart_div" style="width: 0px; height: 300px;" class="bar-chart"></div>
+
+        </div>
+        <div class="second-cont">
+            <div class="second">
+                <!-- speedometer 1 -->
+
+                <div class="firstw">
+                    <h1 class="second-head">Current Ratio</h1>
+                    <div class="speedometer">
+                        <div class="indicator"></div>
+                    </div>
+                </div>
+
+                <!-- speedometer 2 -->
+                <div class="firstw">
+                    <h1 class="second-head">DSI</h1>
+                    <P class="ds">[Days Sales Inventory]</P>
+                    <div class="speedometer2">
+                        <div class="indicator"></div>
+                    </div>
+                </div>
+
+                <!-- speedometer 3 -->
+                <div class="firstw">
+                    <h1 class="second-head">DSO</h1>
+                    <P class="ds">[Days Sales Outstanding]</P>
+                    <div class="speedometer3">
+                        <div class="indicator"></div>
+                    </div>
+                </div>
+
+                <!-- speedometer 4 -->
+                <div class="firstw">
+                    <h1 class="second-head">DPO</h1>
+                    <P class="ds">[Days Payable Outstanding]</P>
+                    <div class="speedometer4">
+                        <div class="indicator"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- Section 3 -->
+
+        <div>
+
+            <!-- Line chart -->
+
+            <div id="line_top_x" style="width: 0px; height: 300px;"></div>
+
+            <!-- Stacked bar -->
+
+            <div id="stacked_bar_chart"></div>
+        </div>
+    </div>
+</body>
+
+</html>
